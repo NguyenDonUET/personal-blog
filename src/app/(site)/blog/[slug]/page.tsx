@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import postsJson from "@/data/posts.json";
-import { ArticleViewSkeleton } from "@/components/article-view-skeleton";import { BlogPostContent } from "./blog-post-content";
+import { ArticleViewSkeleton } from "@/components/article-view-skeleton";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";import { BlogPostContent } from "./blog-post-content";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -22,8 +23,11 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
   return (
-    <Suspense fallback={<ArticleViewSkeleton />}>
-      <BlogPostContent params={params} />
-    </Suspense>
+    <>
+      <Suspense fallback={<ArticleViewSkeleton />}>
+        <BlogPostContent params={params} />
+      </Suspense>
+      <ScrollToTopButton />
+    </>
   );
 }
