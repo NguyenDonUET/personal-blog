@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
       <section className="max-w-3xl space-y-4">
-        <p className="text-2xl font-semibold sm:text-3xl">Hi, I&apos;m Paulina 👋</p>
+        <p className="text-2xl font-semibold sm:text-3xl">Hi, I&apos;m John 👋</p>
         <p className="leading-relaxed text-neutral-700 dark:text-neutral-300">
           I&apos;m on a journey to become a front-end web developer. I love building
           little projects, trying out new coding techniques, and sharing what I learn

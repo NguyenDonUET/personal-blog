@@ -24,7 +24,7 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-neutral-300/60 py-8 dark:border-neutral-700">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          © 2026 Paulina. Learning in public.
+          © 2026 John. Learning in public.
         </p>
         <ul className="flex items-center gap-4">
           {socialLinks.map((link) => (

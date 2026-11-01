@@ -3,7 +3,7 @@ import { ArticleListSkeleton } from "@/components/article-card-skeleton";
 import { BlogPostsList } from "./blog-posts-list";
 
 export const metadata = {
-  title: "Blog | Paulina's Blog",
+  title: "Blog | John's Blog",
 };
 
 export default function BlogPage() {

@@ -58,7 +58,7 @@ export function SiteHeader() {
           href="/"
           className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
         >
-          <span className="text-lg font-semibold tracking-tight">Paulina&apos;s Blog</span>
+          <span className="text-lg font-semibold tracking-tight">John&apos;s Blog</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Main">

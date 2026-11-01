@@ -27,7 +27,7 @@ const firaCode = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Paulina's Blog",
+  title: "John's Blog",
   description: "A personal blog documenting a front-end development journey.",
   icons: {
     icon: "/assets/images/favicon-32x32.png",

@@ -1,7 +1,7 @@
 import { NewsletterForm } from "@/components/newsletter-form";
 
 export const metadata = {
-  title: "Newsletter | Paulina's Blog",
+  title: "Newsletter | John's Blog",
 };
 
 export default function NewsletterPage() {

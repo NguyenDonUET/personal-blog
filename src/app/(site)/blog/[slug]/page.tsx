@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   const post = postsJson.find((entry) => entry.slug === slug);
 
   return {
-    title: post ? `${post.title} | Paulina's Blog` : "Paulina's Blog",
+    title: post ? `${post.title} | John's Blog` : "John's Blog",
     description: post?.description,
   };
 }

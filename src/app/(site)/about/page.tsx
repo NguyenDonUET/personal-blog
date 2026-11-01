@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export const metadata = {
-  title: "About | Paulina's Blog",
+  title: "About | John's Blog",
 };
 
 export default function AboutPage() {
@@ -10,7 +10,7 @@ export default function AboutPage() {
       <h1 className="text-3xl font-semibold">About Me</h1>
       <div className="mt-6 space-y-4 leading-relaxed text-neutral-700 dark:text-neutral-300">
         <p>
-          Hi, I&apos;m Paulina! Ever since I can remember, I&apos;ve had a passion for
+          Hi, I&apos;m John! Ever since I can remember, I&apos;ve had a passion for
           creativity and problem-solving. That&apos;s what led me to the world of front-end
           web development.
         </p>
@@ -46,7 +46,7 @@ export default function AboutPage() {
             />
             <Image
               src="/assets/images/image-workspace-small.jpg"
-              alt="Paulina's workspace with laptop, plants, and warm lighting"
+              alt="John's workspace with laptop, plants, and warm lighting"
               width={768}
               height={512}
               className="w-full rounded-xl border border-neutral-300/70 dark:border-neutral-700"
