@@ -1,11 +1,14 @@
 # Frontend Mentor - Personal blog solution
 
-This is a solution to the [Personal blog challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/personal-blog-lJpVCnmozL). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
+This is a solution to the [Personal blog challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/personal-blog-lJpVCnmozL). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
+
+I went beyond the static design and turned it into a full-stack app: posts live in MongoDB and are managed through a password-protected admin area with a Markdown editor.
 
 ## Table of contents
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
+  - [Beyond the challenge](#beyond-the-challenge)
   - [Screenshot](#screenshot)
   - [Links](#links)
 - [My process](#my-process)
@@ -15,9 +18,6 @@ This is a solution to the [Personal blog challenge on Frontend Mentor](https://w
   - [Useful resources](#useful-resources)
   - [AI Collaboration](#ai-collaboration)
 - [Author](#author)
-- [Acknowledgments](#acknowledgments)
-
-**Note: Delete this note and update the table of contents based on what sections you keep.**
 
 ## Overview
 
@@ -36,21 +36,22 @@ Users should be able to:
 - View the optimal layout for the interface depending on their device's screen size
 - See hover and focus states for all interactive elements on the page
 
+### Beyond the challenge
+
+- Posts are stored in MongoDB (Mongoose) instead of a static JSON file, with a seed script to load the sample articles
+- A password-protected admin area (`/admin`) to create, edit, and delete posts
+- Rich Markdown editing with MDXEditor; public pages render Markdown with `react-markdown` + `remark-gfm`
+- Sessions handled with encrypted cookies (`iron-session`) and bcrypt-hashed admin passwords
+- Graceful fallback: without a database connection, public pages read from `src/data/posts.json`
+- End-to-end tests with Playwright, including automated accessibility checks (axe-core) for color contrast and spacing in both light and dark themes
+
 ### Screenshot
 
-![](./screenshot.jpg)
-
-Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
-
-Alternatively, you can use a tool like [FireShot](https://getfireshot.com/) to take the screenshot. FireShot has a free option, so you don't need to purchase it. 
-
-Then crop/optimize/edit your image however you like, add it to your project, and update the file path in the image above.
-
-**Note: Delete this note and the paragraphs above when you add your screenshot. If you prefer not to add a screenshot, feel free to remove this entire section.**
+![Screenshot of the personal blog](./preview.jpg)
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Solution URL: [GitHub repository](https://github.com/NguyenDonUET/personal-blog)
 - Live Site URL: [Add live site URL here](https://your-live-site-url.com)
 
 ## My process
@@ -62,69 +63,67 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+- [Next.js](https://nextjs.org/) (App Router, Server Actions, Middleware) - React framework
+- [React](https://react.dev/) - JS library
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) - Styling and accessible UI primitives
+- [Zustand](https://zustand.docs.pmnd.rs/) - Client state (theme preference, newsletter form)
+- [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/) - Database
+- [MDXEditor](https://mdxeditor.dev/) - Markdown editor for the admin area
+- [iron-session](https://github.com/vvo/iron-session) + [bcryptjs](https://github.com/dcodeIO/bcrypt.js) - Admin authentication
+- [Playwright](https://playwright.dev/) + [axe-core](https://github.com/dequelabs/axe-core) - End-to-end and accessibility testing
 
 ### What I learned
 
-Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
+**Theme selection that respects the OS setting.** The theme preference has three states (`light`, `dark`, `system`) and is persisted to `localStorage` with Zustand's `persist` middleware. When the preference is `system`, the provider listens for OS-level changes so the page updates live:
 
-To see how you can add code snippets, see below:
+```ts
+if (preference !== "system") return;
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
-```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
-}
+const media = window.matchMedia("(prefers-color-scheme: dark)");
+media.addEventListener("change", apply);
+return () => media.removeEventListener("change", apply);
 ```
 
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
+**Accessible form feedback.** The newsletter form disables native browser validation (`noValidate`) so I could show the design's custom messages, then connects them to the input for screen readers. Errors use `role="alert"` so they are announced right away, while the success message uses the politer `role="status"`:
 
-**Note: Delete this note and the content within this section and replace with your own learnings.**
+```tsx
+<Input
+  id="newsletter-email"
+  type="email"
+  aria-invalid={status === "error"}
+  aria-describedby={status !== "idle" ? "newsletter-feedback" : undefined}
+/>
+```
+
+**Protecting routes on the server.** Admin pages are guarded in Next.js Middleware, which reads the encrypted session cookie before any page renders. Server Actions also call `requireAuth()` themselves, because Middleware only protects page navigation, not direct action calls.
+
+**Testing accessibility automatically.** Instead of only checking contrast by eye, Playwright emulates the light and dark color schemes and runs axe-core against every public route. One lesson: CSS color transitions made axe sample half-faded colors, so the tests disable transitions before scanning.
 
 ### Continued development
 
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+- Connect the newsletter form to a real email service instead of client-side validation only
+- Add draft/published states and image uploads to the admin editor
+- Look into rate limiting the admin login
+- Keep building the habit of writing accessibility tests alongside features, not after
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
+- [Next.js documentation](https://nextjs.org/docs) - App Router, Server Actions, and Middleware
+- [MDN: ARIA live regions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) - Helped me choose between `role="alert"` and `role="status"` for form feedback
+- [MDN: prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) - Detecting the user's OS theme
+- [Playwright accessibility testing](https://playwright.dev/docs/accessibility-testing) - Setting up axe-core with Playwright
+- [iron-session](https://github.com/vvo/iron-session) - Encrypted cookie sessions for Next.js
 
 ### AI Collaboration
 
-Describe how you used AI tools (if any) during this project. This helps demonstrate your ability to work effectively with AI assistants.
+I used Cursor's AI agent during this project.
 
-- What tools did you use (e.g., ChatGPT, Claude, GitHub Copilot)?
-- How did you use them (e.g., debugging, generating boilerplate, brainstorming solutions)?
-- What worked well? What didn't?
-
-**Note: Delete this note and the content above if you didn't use AI, or replace with your own experience.**
+- **How I used it:** discussing architecture trade-offs (static JSON vs. a database, how to protect admin routes), debugging, and writing Playwright accessibility tests.
+- **What worked well:** talking through options before writing code, and using it to catch accessibility issues such as color contrast in dark mode.
+- **What didn't:** suggestions still needed review and testing. The end-to-end tests were what gave me confidence that changes actually worked.
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
+- GitHub - [@NguyenDonUET](https://github.com/NguyenDonUET)
 - Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
-
-## Acknowledgments
-
-This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
-
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
