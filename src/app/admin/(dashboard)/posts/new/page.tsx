@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { PostForm } from "@/components/admin/post-form";
+import { PostFormSkeleton } from "@/components/admin/post-form-skeleton";
 
 export default function NewPostPage() {
   return (
@@ -10,7 +11,7 @@ export default function NewPostPage() {
           Write in markdown using the editor below.
         </p>
       </div>
-      <Suspense fallback={<p className="text-sm text-muted-foreground">Loading form…</p>}>
+      <Suspense fallback={<PostFormSkeleton />}>
         <PostForm />
       </Suspense>
     </div>

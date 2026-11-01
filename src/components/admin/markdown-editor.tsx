@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 import "@mdxeditor/editor/style.css";
 
 function useSiteDarkMode(): boolean {
@@ -91,8 +92,31 @@ const Editor = dynamic(
         );
       };
     }),
-  { ssr: false, loading: () => <p className="text-sm text-muted-foreground">Loading editor…</p> },
+  { ssr: false, loading: () => <EditorSkeleton /> },
 );
+
+function EditorSkeleton() {
+  return (
+    <div className="overflow-hidden rounded-lg border border-border">
+      <p role="status" className="sr-only">
+        Loading editor…
+      </p>
+      <div aria-hidden="true">
+        <div className="flex gap-2 border-b border-border p-2">
+          {Array.from({ length: 6 }, (_, index) => (
+            <Skeleton key={index} className="size-7" />
+          ))}
+        </div>
+        <div className="space-y-2 p-4">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-11/12" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+        <div className="h-48" />
+      </div>
+    </div>
+  );
+}
 
 type MarkdownEditorProps = {
   value: string;
@@ -108,7 +132,7 @@ export function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
   }, []);
 
   if (!mounted) {
-    return <p className="text-sm text-muted-foreground">Loading editor…</p>;
+    return <EditorSkeleton />;
   }
 
   return (

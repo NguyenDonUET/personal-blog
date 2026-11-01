@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { AdminPostsTable } from "./admin-posts-table";
+import { PostsTableSkeleton } from "@/components/admin/posts-table-skeleton";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +26,7 @@ export default function AdminDashboardPage() {
         </Link>
       </div>
 
-      <Suspense fallback={<p className="text-sm text-muted-foreground">Loading posts…</p>}>
+      <Suspense fallback={<PostsTableSkeleton />}>
         <AdminPostsTable />
       </Suspense>
     </div>

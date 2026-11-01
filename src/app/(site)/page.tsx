@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { ArticleListSkeleton } from "@/components/article-card-skeleton";
 import { HomePostsSection } from "./home-posts-section";
 
 export default function HomePage() {
@@ -23,9 +24,7 @@ export default function HomePage() {
         fallback={
           <section className="mt-12">
             <h1 className="text-xl font-semibold sm:text-2xl">Latest Articles</h1>
-            <p className="mt-4 text-sm text-neutral-600 dark:text-neutral-400">
-              Loading articles…
-            </p>
+            <ArticleListSkeleton count={5} className="mt-6" />
           </section>
         }
       >

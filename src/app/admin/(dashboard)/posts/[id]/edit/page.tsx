@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { EditPostPageContent } from "./edit-post-page-content";
+import { EditPostPageSkeleton } from "./edit-post-page-skeleton";
 
 type EditPostPageProps = {
   params: Promise<{ id: string }>;
@@ -7,7 +8,7 @@ type EditPostPageProps = {
 
 export default function EditPostPage({ params }: EditPostPageProps) {
   return (
-    <Suspense fallback={<p className="text-sm text-muted-foreground">Loading post…</p>}>
+    <Suspense fallback={<EditPostPageSkeleton />}>
       <EditPostPageContent params={params} />
     </Suspense>
   );

@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { ArticleListSkeleton } from "@/components/article-card-skeleton";
 import { BlogPostsList } from "./blog-posts-list";
 
 export const metadata = {
@@ -16,13 +17,7 @@ export default function BlogPage() {
         </p>
       </header>
 
-      <Suspense
-        fallback={
-          <p className="mt-8 text-sm text-neutral-600 dark:text-neutral-400">
-            Loading articles…
-          </p>
-        }
-      >
+      <Suspense fallback={<ArticleListSkeleton count={4} className="mt-8" />}>
         <BlogPostsList />
       </Suspense>
     </div>
